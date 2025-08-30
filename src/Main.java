@@ -20,17 +20,17 @@ public class Main {
                     break;
                 case 2:
                     int m = readMonth(sc, "Введите месяц (1-12 / название / сокращение): ");
-                    st.printMonthReport(m);
+                    st.printMonthStatistics(m);
                     break;
 
                 case 3:
                     int newPurpose = readIntMin(sc, "Новая цель по шагам в день (>=0): ", 0);
-                    st.setPurpose(newPurpose);
-                    System.out.println("Цель обновлена: " + st.getPurpose());
+                    st.setDailyGoal(newPurpose);
+                    System.out.println("Цель обновлена: " + st.getDailyGoal());
                     break;
 
                 case 4:
-                    System.out.println("Текущая цель: " + st.getPurpose());
+                    System.out.println("Текущая цель: " + st.getDailyGoal());
                     break;
 
                 case 0:

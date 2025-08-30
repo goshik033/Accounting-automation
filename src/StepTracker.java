@@ -1,6 +1,6 @@
 public class StepTracker {
 
-    private int purpose = 10000;
+    private int dailyGoal = 10000;
     private static final int MONTHS = 12;
     private static final int DAYS_IN_MONTH = 30;
     private final int[][] steps = new int[MONTHS][DAYS_IN_MONTH];
@@ -21,11 +21,11 @@ public class StepTracker {
     }
 
 
-    public int getPurpose() {
-        return purpose;
+    public int getDailyGoal() {
+        return dailyGoal;
     }
 
-    public int total(int month) {
+    public int getTotalForMonth(int month) {
         int total = 0;
         for (int step : steps[month]) {
             total += step;
@@ -33,30 +33,30 @@ public class StepTracker {
         return total;
     }
 
-    public void printMonthReport(int month) {
+    public void printMonthStatistics(int month) {
 
-        System.out.println("Количество пройденных шагов по дням за месяц: " + stepsPerMonth(month));
-        System.out.println("Общее колическтов шагов за месяц: " + total(month));
-        System.out.println("Максимальное количество шагов за месяц: " + getMax(month));
-        System.out.println("Среднее количество шагов за месяц: " + getAverage(month));
-        System.out.println("Пройденная дистанция в км за месяц: " + getDistance(month));
-        System.out.println("Количество сожженных калорий за месяц: " + getCalories(month));
-        System.out.println("Лучшая серия за месяц: " + bestSegment(month));
+        System.out.println("Количество пройденных шагов по дням за месяц: " + formatStepsByDays(month));
+        System.out.println("Общее количестов шагов за месяц: " + getTotalForMonth(month));
+        System.out.println("Максимальное количество шагов за месяц: " + getMaxForMonth(month));
+        System.out.printf("Среднее количество шагов за месяц: %.2f%n", getAverageForMonth(month));
+        System.out.println("Пройденная дистанция в км за месяц: " + getDistanceKmForMonth(month));
+        System.out.println("Количество сожженных калорий за месяц: " + getCaloriesForMonth(month));
+        System.out.println("Лучшая серия за месяц: " + getBestStreak(month));
     }
 
-    public double getDistance(int month) {
+    public double getDistanceKmForMonth(int month) {
         Converter converter = new Converter();
-        int total = total(month);
+        int total = getTotalForMonth(month);
         return converter.convertToKm(total);
     }
 
-    public double getCalories(int month) {
+    public double getCaloriesForMonth(int month) {
         Converter converter = new Converter();
-        int total = total(month);
+        int total = getTotalForMonth(month);
         return converter.convertToCalories(total);
     }
 
-    public String stepsPerMonth(int month) {
+    public String formatStepsByDays(int month) {
         StringBuilder sb = new StringBuilder();
         for (int day = 0; day < 30; day++) {
             sb.append(day + 1).append(" день: ").append(steps[month][day]).append(", ");
@@ -65,7 +65,7 @@ public class StepTracker {
         return sb.toString();
     }
 
-    public int getMax(int month) {
+    public int getMaxForMonth(int month) {
         int max = 0;
         for (int day = 0; day < 30; day++) {
             max = Math.max(max, steps[month][day]);
@@ -73,15 +73,16 @@ public class StepTracker {
         return max;
     }
 
-    public int getAverage(int month) {
-        return total(month) / 30;
+    public double getAverageForMonth(int month) {
+
+        return getTotalForMonth(month) / (double) DAYS_IN_MONTH;
     }
 
-    public int bestSegment(int month) {
+    public int getBestStreak(int month) {
         int counter = 0;
         int maxx = 0;
         for (int day = 0; day < 30; day++) {
-            if (steps[month][day] > purpose) {
+            if (steps[month][day] >= dailyGoal) {
                 counter++;
             } else {
                 maxx = Math.max(maxx, counter);
@@ -92,8 +93,8 @@ public class StepTracker {
         return maxx;
     }
 
-    public void setPurpose(int purpose) {
-        this.purpose = purpose;
+    public void setDailyGoal(int dailyGoal) {
+        this.dailyGoal = dailyGoal;
     }
 }
 
